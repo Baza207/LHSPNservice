@@ -19,8 +19,6 @@ config=ConfigParser.ConfigParser(defaults)
 if config.read(['config.txt']):
 	defaults = dict(config.items("Properties"))
 
-print defaults
-
 username = defaults['dbusername']	# Database username
 password = defaults['dbpassword']	# Database password
 dbName = defaults['dbname']			# Database name
