@@ -6,7 +6,13 @@
 //	Created by James Barrow on 02/07/2013.
 //
 
-	include "../config.php";
+	$conf = parse_ini_file("src/config.cfg", true);
+	$properties = $conf['Properties'];
+
+	$username = $properties['dbUsername'];
+	$password = $properties['dbPassword'];
+	$database = $properties['dbName'];
+	$dbTable = $properties['dbTable'];
 
 	function getTokenFromDB($dbTable, $token)
 	{

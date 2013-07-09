@@ -1,6 +1,6 @@
 /build/*
 /dist/*
-config.txt
+config.cfg
 PushTest.py
 *.pyc
 *.log
