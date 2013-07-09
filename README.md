@@ -167,7 +167,9 @@ To save a new device or update a current one use the POST call and include the f
 ##### Example
 
 HTTP Request Method: `POST`
-`YourURL/saveToken.php?token=19e5d3a4a27eb08e9b2d22166152a5492fd645868f1e6909e80ba99256c8590f&userInfo={}&OSVersion=iOS&isDev=0`
+```
+YourURL/saveToken.php?token=19e5d3a4a27eb08e9b2d22166152a5492fd645868f1e6909e80ba99256c8590f&userInfo={}&OSVersion=iOS&isDev=0
+```
 
 #### Deleting a Device `DELETE`
 To delete a device use the DELETE call and set the paramater as the token of the device to delete.
@@ -175,7 +177,9 @@ To delete a device use the DELETE call and set the paramater as the token of the
 ##### Example
 
 HTTP Request Method: `DELETE`
-`YourURL/saveToken.php?19e5d3a4a27eb08e9b2d22166152a5492fd645868f1e6909e80ba99256c8590f`
+```
+YourURL/saveToken.php?19e5d3a4a27eb08e9b2d22166152a5492fd645868f1e6909e80ba99256c8590f
+```
 
 ## License
 
