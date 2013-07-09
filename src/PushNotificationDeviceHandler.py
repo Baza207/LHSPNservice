@@ -16,7 +16,7 @@ defaults = {'dbUsername': '',
 			'dbTable': ''}
 
 config=ConfigParser.ConfigParser(defaults)
-if config.read(['config.txt']):
+if config.read(['config.cfg']):
 	defaults = dict(config.items("Properties"))
 
 username = defaults['dbusername']	# Database username
@@ -40,9 +40,9 @@ def getDevice(db, token):
 
 	return result
 
-def saveDevice(db, token, OSVersion, isDev):
+def saveDevice(db, token, OSVersion, isDev, userInfo):
 	timestamp = int(time.time())
-	db.query("INSERT INTO %s (token, badge, OSVersion, isDev, createdAt, updatedAt) VALUES ('%s', 0, '%s', '%d', '%d', '%d')" %(dbTable, token, OSVersion, isDev, timestamp, timestamp))
+	db.query("INSERT INTO %s (token, badge, OSVersion, isDev, userInfo, createdAt, updatedAt) VALUES ('%s', 0, '%s', '%d', '%d', '%d')" %(dbTable, token, OSVersion, isDev, userInfo, timestamp, timestamp))
 
 def updateDevice(db, token, badge, OSVersion, isDev, userInfo):
 	timestamp = int(time.time())
