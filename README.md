@@ -3,7 +3,34 @@ LHSPNservice
 
 LHS Push Notification service is a module for sending push notifications (currently only to iOS) using Python. There are plans to extend this to allow push notifications to be sent to other platforms with the same system.
 
-## APNservice
+## Prerequisites
+
+LHSPNservice is written in Python with the following extra libraries:
+
+- MySQLdb  
+
+Deviced are stored in a MySQL database, the structure of which is described below.
+
+## Database Structure
+
+After creating a MySQL database, use the following to create the table structure:
+
+```
+CREATE TABLE `LHSPNservice_devices` (
+  `token` varchar(64) NOT NULL,
+  `badge` int(11) unsigned NOT NULL,
+  `OSVersion` varchar(10) NOT NULL DEFAULT '',
+  `isDev` tinyint(1) NOT NULL,
+  `userInfo` varchar(1024) NOT NULL DEFAULT '{}',
+  `updatedAt` int(32) NOT NULL,
+  `createdAt` int(32) NOT NULL,
+  PRIMARY KEY (`token`),
+  UNIQUE KEY `token` (`token`),
+  KEY `token_2` (`token`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+```
+
+## APNservice.py
 
 **NOTE**: To work with and use push notifications with Apple devices you will need a Apple developer licence for ether iOS or OS X. Go to: [https://developer.apple.com/programs/](https://developer.apple.com/programs/) for more information.
 
@@ -99,7 +126,7 @@ Creates, queues and sends the notifications it is passed. Set the alert using `m
 #### `APNservice.checkFeedbackService():`
 This method returns an array of tuples. The tuples hold a timestamp, token length and token. If there were no invalid tokens then this method returns an empty array.
 
-## PushNotificationDeviceHandler
+## PushNotificationDeviceHandler.py
 
 ### Module Functions
 
@@ -127,7 +154,7 @@ Resets the badge count beck to 0 for a device with the `token` variable as the k
 #### `removeFeedbackDevice(feedbackTuple):`
 This function deletes a device from the database from a tuple recived from the APNservice feedback request. The device will only be deleted if it was not updated after the feedback response was recived. This function creates and closes it own database connection.
 
-## Save Tokens
+## saveTokens.php
 This is a PHP file that uses REST to save, update or delete a device from the MySQL database. 
 
 #### Saving or Updating a Device `POST`
