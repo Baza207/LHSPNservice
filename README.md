@@ -179,7 +179,7 @@ HTTP Request Method: `DELETE`
 
 ## License
 
-LHServer is available under the MIT license. See the LICENSE file for more info.
+LHSPNservice is available under the MIT license. See the [LICENSE](https://github.com/Baza207/LHSPNservice/blob/master/LICENSE) file for more info.
 
 ### Creator
 
