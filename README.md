@@ -35,12 +35,9 @@ CREATE TABLE `LHSPNservice_devices` (
 **NOTE**: To work with and use push notifications with Apple devices you will need a Apple developer licence for ether iOS or OS X. Go to: [https://developer.apple.com/programs/](https://developer.apple.com/programs/) for more information.
 
 ### Registering and Saving Tokens for Push Notifications
-The module `DeviceTokenHandler.py` will deal with connecting to a MySQL database and dealing with all the information. This module is still under construction however and will be added soon.
+The module `PushNotificationDeviceHandler.py` deals with connecting to a MySQL database and all the information to be stored on a device.
 
-For reference a database to store this information should allow you to save at least the following variables:  
-• Device Token (string)  
-• Badge Number (unsigned int)  
-• Last Updated (timestamp)  
+The structure of this database is talked about above. [^](#database-structure)
 
 ### Creating Certificates
 For information on creating APNs certificates please refer to the [Apple documents](http://developer.apple.com/library/ios/#documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ProvisioningDevelopment.html).
