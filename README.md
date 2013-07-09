@@ -1,9 +1,7 @@
 LHSPNservice
 ============
 
-LHS Push Notification service is a module for sending push notifications (currently only to iOS) using Python.
-
-There are plans to extend this to allow push notifications to be sent to other platforms with the same system.
+LHS Push Notification service is a module for sending push notifications (currently only to iOS) using Python. There are plans to extend this to allow push notifications to be sent to other platforms with the same system.
 
 ## APNservice
 
@@ -83,7 +81,74 @@ pushService = APNservice()
 invalidTokens = pushService.checkFeedbackService()
 print invalidTokens
 >> [(1373042568, 32, '19e5d3a4a27eb08e9b2d22166152a5492fd645868f1e6909e80ba99256c8590f'), (1373042568, 32, '27788ada507d3ea5e0f7a01b2305f7ffe9a116b03a22677dfe765771fdc28148')]
-```  
+```
+
+### Module Functions
+
+#### `makeAlert(body, actionLocKey, locKey, locArgs, launchImage):`
+Returns a dictionary of the alert information. For a simple message just set `body` as a string for your alert and send `None` to all the other variables. For more information of the type of data and localisation protocols for Apple push notifications, please refer to the [Apple documents](http://developer.apple.com/library/mac/#documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html).
+
+### Module Classes and Methods
+
+#### `APNservice()`
+Creates an instance of `APNservice` to use to queue notifications and connect to the feedback service.
+
+#### `APNservice.queueNotifications(tokens, alert, sound):`
+Creates, queues and sends the notifications it is passed. Set the alert using `makeAlert()` and `sound` as a string of the sound file name to play (if you want to use the default sound then pass `None`).
+
+#### `APNservice.checkFeedbackService():`
+This method returns an array of tuples. The tuples hold a timestamp, token length and token. If there were no invalid tokens then this method returns an empty array.
+
+## PushNotificationDeviceHandler
+
+### Module Functions
+
+#### `connectToDatabase():`
+Connects to the MySQL database. Remember to always close a database connection when you are finished with it with `db.close()`.
+
+#### `getDevice(db, token):`
+Get a device details as a dictionary from the database. Requres a database variable to be ba passed to `db`. (Use `db = connectToDatabase():` to setup the database connection and `db.close()` to close it.) Also pass token of the device you want to get returned to the `token` var.
+
+#### `saveDevice(db, token, OSVersion, isDev, userInfo):`
+Saves a new device in a database with `token` as the key. Requres a database variable to be ba passed to `db`. (Use `db = connectToDatabase():` to setup the database connection and `db.close()` to close it.) `userInfo` is a JSON dictionary string to hold extra data. `OSVersion` is to define the platform the device is running (E.g. iOS, Android, etc).
+
+#### `updateDevice(db, token, badge, OSVersion, isDev, userInfo):`
+Updated a device that already exists in the database. Requres a database variable to be ba passed to `db`. (Use `db = connectToDatabase():` to setup the database connection and `db.close()` to close it.)
+
+#### `deleteDevice(db, token):`
+ Delete a device with the key passed in the `token` variable. Requres a database variable to be ba passed to `db`. (Use `db = connectToDatabase():` to setup the database connection and `db.close()` to close it.)
+
+#### `incrementBadge(token):`
+Increments the badge count for a device with the `token` variable as the key. This function creates it own database connection.
+
+#### `resetBadge(token):`
+Resets the badge count beck to 0 for a device with the `token` variable as the key. This function creates and closes it own database connection.
+
+#### `removeFeedbackDevice(feedbackTuple):`
+This function deletes a device from the database from a tuple recived from the APNservice feedback request. The device will only be deleted if it was not updated after the feedback response was recived. This function creates and closes it own database connection.
+
+## Save Tokens
+This is a PHP file that uses REST to save, update or delete a device from the MySQL database. 
+
+#### Saving or Updating a Device `POST`
+To save a new device or update a current one use the POST call and include the following paramaters:  
+- `token` This must be included as it is the database key,  
+- `userInfo` A JSON dictionary,  
+- `OSVersion` Defines the OS the device is running,  
+- `isDev` A `BOOL` defining if the device is returning a development token or distribution.  
+
+##### Example
+
+HTTP Request Method: `POST`
+`YourURL/saveToken.php?token=19e5d3a4a27eb08e9b2d22166152a5492fd645868f1e6909e80ba99256c8590f&userInfo={}&OSVersion=iOS&isDev=0`
+
+#### Deleting a Device `DELETE`
+To delete a device use the DELETE call and set the paramater as the token of the device to delete.
+
+##### Example
+
+HTTP Request Method: `DELETE`
+`YourURL/saveToken.php?19e5d3a4a27eb08e9b2d22166152a5492fd645868f1e6909e80ba99256c8590f`
 
 ## License
 
