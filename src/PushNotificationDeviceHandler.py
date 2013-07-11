@@ -9,11 +9,11 @@
 
 import MySQLdb, time, binascii, ConfigParser
 
-defaults = {'dbUsername': '',
-			'dbPassword': '',
-			'dbName': '',
-			'dbPort': '3306',
-			'dbTable': ''}
+defaults = {'dbusername': '',
+			'dbpassword': '',
+			'dbname': '',
+			'dbport': '3306',
+			'dbtable': ''}
 
 config=ConfigParser.ConfigParser(defaults)
 if config.read(['config.cfg']):
@@ -39,6 +39,44 @@ def getDevice(db, token):
 		result = None
 
 	return result
+
+def getDevicesWithOrDict(db, searchDict, sendToDev):
+	queryString = "SELECT * FROM %s WHERE " %(dbTable)
+	searchArray = []
+
+	for key in searchDict:
+		searchString = '"%s":"%s"' %(key, searchDict[key])
+		searchString = "userInfo LIKE '%%%s%%'" %(searchString)
+		searchArray.append(searchString)
+
+	allSearchStrings = ' OR '.join(searchArray)
+	queryString += '('+allSearchStrings+')'
+	queryString += " AND isDev = '%d'" %(sendToDev)
+
+	db.query(queryString)
+	result = db.store_result()
+	data = result.fetch_row(0, 1)
+
+	return data
+
+def getDevicesWithAndDict(db, searchDict, sendToDev):
+	queryString = "SELECT * FROM %s WHERE " %(dbTable)
+	searchArray = []
+
+	for key in searchDict:
+		searchString = '"%s":"%s"' %(key, searchDict[key])
+		searchString = "userInfo LIKE '%%%s%%'" %(searchString)
+		searchArray.append(searchString)
+
+	allSearchStrings = ' AND '.join(searchArray)
+	queryString += allSearchStrings
+	queryString += " AND isDev = '%d'" %(sendToDev)
+
+	db.query(queryString)
+	result = db.store_result()
+	data = result.fetch_row(0, 1)
+
+	return data
 
 def saveDevice(db, token, OSVersion, isDev, userInfo):
 	timestamp = int(time.time())
