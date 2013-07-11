@@ -7,21 +7,21 @@
 
 #!/usr/bin/env python
 
-import ssl, json, socket, struct, binascii, time, thread, logging
+import ssl, json, socket, struct, binascii, time, thread, logging, ConfigParser
 import PushNotificationDeviceHandler as deviceHandler
 
 defaults = {'livecert': '',
-			'devcert': ''}
+			'devcert': '',
+			'logfilehandler': 'LHSPNservice.log'}
 
 config=ConfigParser.ConfigParser(defaults)
 if config.read(['config.cfg']):
 	defaults = dict(config.items("Properties"))
 
-# Certification names and/or locations
 liveCert = defaults['livecert']
 devCert = defaults['devcert']
+logFileHandler = defaults['logfilehandler']
 
-logFileHandler = '../log/LHSPNservice.log'
 logLevel = logging.WARNING
 
 MAX_RETRY = 1
