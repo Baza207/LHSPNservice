@@ -21,6 +21,9 @@ if config.read(['config.cfg']):
 liveCert = defaults['livecert']
 devCert = defaults['devcert']
 
+logFileHandler = '../log/LHSPNservice.log'
+logLevel = logging.WARNING
+
 MAX_RETRY = 1
 RETRY_STATUS_CODES = [1, 10]
 
@@ -34,6 +37,17 @@ class APNservice(object):
 		self.__failedTuple = None
 		self.__notifBinaryDict = {}
 		self.__failedCounts = {}
+
+		logging.basicConfig(level=logLevel,
+							   format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+							   filename=logFileHandler,
+							   filemode='a')
+		console = logging.StreamHandler()
+		console.setLevel(logLevel)
+		formatter = logging.Formatter('%(name)-12s %(levelname)-8s %(message)s')
+		console.setFormatter(formatter)
+		logger = logging.getLogger('LHSPNservice')
+		logger.addHandler(console)
 
 	def __recv_data(self, bufferSize, callback):
 		# Receive data from other clients connected to server
