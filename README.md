@@ -133,6 +133,24 @@ Connects to the MySQL database. Remember to always close a database connection w
 #### `getDevice(db, token):`
 Get a device details as a dictionary from the database. Requres a database variable to be ba passed to `db`. (Use `db = connectToDatabase():` to setup the database connection and `db.close()` to close it.) Also pass token of the device you want to get returned to the `token` var.
 
+#### `getDevicesWithOrDict(db, searchDict, sendToDev):`
+This function will search the database `userInfo` field for any of the key-value pairs in the `searchDict`.  
+
+For example, if `searchDict` contains `{"aKey":"someValue", "anoutherKey":"someotherValue"}` then it will search the database for any entry that contrains, `"aKey":"someValue"` OR `"anoutherKey":"someotherValue"` in the `userInfo` fields JSON string.  
+
+For this method but with an AND statement to look for all the key-value pairs, look at `getDevicesWithAndDict(db, searchDict, sendToDev):`.  
+
+Requres a database variable to be ba passed to `db`. (Use `db = connectToDatabase():` to setup the database connection and `db.close()` to close it.)  
+
+#### `getDevicesWithAndDict(db, searchDict, sendToDev):`
+This function will search the database `userInfo` field for all the key-value pairs in the `searchDict`.  
+
+For example, if `searchDict` contains `{"aKey":"someValue", "anoutherKey":"someotherValue"}` then it will search the database for any entry that contrains `"aKey":"someValue"` AND `"anoutherKey":"someotherValue"` in the `userInfo` fields JSON string.  
+
+For this method but with an OR statement to look for any of the key-value pairs look at `getDevicesWithOrDict(db, searchDict, sendToDev):`.  
+
+Requres a database variable to be ba passed to `db`. (Use `db = connectToDatabase():` to setup the database connection and `db.close()` to close it.)  
+
 #### `saveDevice(db, token, OSVersion, isDev, userInfo):`
 Saves a new device in a database with `token` as the key. Requres a database variable to be ba passed to `db`. (Use `db = connectToDatabase():` to setup the database connection and `db.close()` to close it.) `userInfo` is a JSON dictionary string to hold extra data. `OSVersion` is to define the platform the device is running (E.g. iOS, Android, etc).
 
