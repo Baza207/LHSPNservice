@@ -10,19 +10,25 @@
 import ssl, json, socket, struct, binascii, time, thread, logging
 import PushNotificationDeviceHandler as deviceHandler
 
-debug = True
-# Sets the APNs to sandbox (True) or live (False)
-sandbox = True
+defaults = {'livecert': '',
+			'devcert': ''}
+
+config=ConfigParser.ConfigParser(defaults)
+if config.read(['config.cfg']):
+	defaults = dict(config.items("Properties"))
+
 # Certification names and/or locations
-liveCert = ''
-devCert = '../LHS_anps_dev.pem'
+liveCert = defaults['livecert']
+devCert = defaults['devcert']
 
 MAX_RETRY = 1
 RETRY_STATUS_CODES = [1, 10]
 
 class APNservice(object):
-	def __init__(self):
+	def __init__(self, isSandbox):
 		super(APNservice, self).__init__()
+		# Sets the APNs to sandbox (True) or live (False)
+		self.isSandbox = isSandbox
 		self.__sock = None
 		self.__currentID = 0
 		self.__failedTuple = None
@@ -65,7 +71,7 @@ class APNservice(object):
 	# Opens a socket connection to the APNs
 	def __openAPNsConnection(self):
 		cert = ''
-		if sandbox:
+		if self.isSandbox:
 			cert = devCert
 			address = ('gateway.sandbox.push.apple.com', 2195)
 		else:
@@ -77,7 +83,7 @@ class APNservice(object):
 	# Open a socket connection to the Feedback server
 	def __openFeedbackConnection(self):
 		cert = ''
-		if sandbox:
+		if self.isSandbox:
 			cert = devCert
 			address = ('feedback.sandbox.push.apple.com', 2196)
 		else:
